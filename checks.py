@@ -64,7 +64,7 @@ def check_for_server_error(request) -> json:
         print(response)
         response = request()
 
-    if int(str(response.status_code)[0]) == 4:
+    if int(str(response.status_code)[0]) == 4 and int(str(response.status_code)[2]) != 0:
         print(f"{response}\nStopping, please verify your environment variables!")
         sys.exit()
 
@@ -81,7 +81,7 @@ def check_user_created(u_id) -> bool:
                     print("User previously created")
                     return True
 
-        f.write(f"{u_id}\n")
+            f.write(f"{u_id}\n")
     except FileExistsError:
         with open("created_users.txt", "r+") as f:
             for line in f:
@@ -89,6 +89,6 @@ def check_user_created(u_id) -> bool:
                     print("User previously created")
                     return True
 
-        f.write(f"{u_id}\n")
+            f.write(f"{u_id}\n")
 
     return False

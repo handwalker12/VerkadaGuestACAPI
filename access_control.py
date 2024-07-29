@@ -133,7 +133,7 @@ def send_pass_app_invite(api_key, user_id) -> None:
         "x-api-key": api_key
     }
 
-    response = check_for_server_error(lambda: requests.post(url=url, headers=headers, params=params))
+    check_for_server_error(lambda: requests.post(url=url, headers=headers, params=params))
 
 
 # Gets all ac groups
