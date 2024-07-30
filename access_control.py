@@ -1,5 +1,6 @@
 import requests
-from checks import name_splitter, payload_creator, check_for_server_error, check_user_created
+from checks import (name_splitter, payload_creator, check_for_server_error, check_user_previously_created,
+                    add_user_to_created_users)
 import json
 
 
@@ -98,12 +99,20 @@ def create_user_if_not_exists(api_key, new_user) -> dict:
     for user in user_list:
         user_names = name_splitter(user['full_name'])
 
+        # Checks if the user has been previously created by this script
+        if check_user_previously_created(user['user_id']):
+            new_user['ac_exists'] = True
+            new_user['user_id'] = user['user_id']
+
+            return new_user
+
         # Checks if the emails match
         if new_user['email'] == user['email']:
             print(f"{new_user['email']} already exists, updating information")
             new_user['ac_exists'] = True
             new_user['user_id'] = user['user_id']
             update_users_information(api_key, new_user['user_id'], new_user['address'])
+            add_user_to_created_users(new_user['user_id'])
 
             return new_user
 
@@ -114,14 +123,17 @@ def create_user_if_not_exists(api_key, new_user) -> dict:
             new_user['ac_exists'] = True
             new_user['user_id'] = user['user_id']
             update_users_information(api_key, new_user['user_id'], new_user['address'])
+            add_user_to_created_users(new_user['user_id'])
 
             return new_user
 
+    # Creates the new user, sends pass app invite, updates created_users.txt
     create_user_response = create_new_user(api_key, new_user)
     new_user['ac_exists'] = True
     new_user['user_id'] = create_user_response['user_id']
     print(f"User Created!\nUser Info: {new_user}")
     send_pass_app_invite(api_key, new_user['user_id'])
+    add_user_to_created_users(new_user['user_id'])
 
     return new_user
 
@@ -163,8 +175,7 @@ def get_created_ac_users(api_key, new_users) -> list:
 
     for user in new_users:
         created_user_output = create_user_if_not_exists(api_key, user)
-        if not check_user_created(created_user_output['user_id']):
-            list_of_new_users.append(created_user_output)
+        list_of_new_users.append(created_user_output)
 
     return list_of_new_users
 

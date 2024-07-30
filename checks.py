@@ -72,7 +72,7 @@ def check_for_server_error(request) -> json:
     return response
 
 
-def check_user_created(u_id) -> bool:
+def check_user_previously_created(u_id) -> bool:
     """Checks to see if the user has already been created from a previous script run."""
     try:
         with open("created_users.txt", "x+") as f:
@@ -81,7 +81,7 @@ def check_user_created(u_id) -> bool:
                     print("User previously created")
                     return True
 
-            f.write(f"{u_id}\n")
+            return False
     except FileExistsError:
         with open("created_users.txt", "r+") as f:
             for line in f:
@@ -89,6 +89,14 @@ def check_user_created(u_id) -> bool:
                     print("User previously created")
                     return True
 
-            f.write(f"{u_id}\n")
+            return False
 
-    return False
+
+def add_user_to_created_users(u_id) -> None:
+    """Adds a new user id to the created_users.txt"""
+    try:
+        with open("created_users.txt", "x+") as f:
+            f.write(f"{u_id}\n")
+    except FileExistsError:
+        with open("created_users.txt", "r+") as f:
+            f.write(f"{u_id}\n")
