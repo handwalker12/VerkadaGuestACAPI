@@ -5,31 +5,6 @@ from checks import name_splitter, check_address, check_for_server_error
 import json
 
 
-def get_guests(api_key, site_id) -> json:
-    """Gets all guests that have checked in on the current day."""
-    print("Retrieving visitor list")
-
-    today = datetime.today()
-    today_unix = round(time.mktime(datetime.combine(today, datetime.min.time()).timetuple()))
-    now_unix = round(time.mktime(datetime.now().timetuple()))
-
-    url = "https://api.verkada.com/guest/v1/visits"
-    headers = {
-        "accept": "application/json",
-        "x-api-key": api_key
-    }
-    params = {
-        "site_id": site_id,
-        "start_time": today_unix,
-        "end_time": now_unix,
-    }
-
-    request = check_for_server_error(lambda: requests.get(url=url, headers=headers, params=params))
-    guest_response = request.json()
-
-    return guest_response
-
-
 def format_guest_info(response, guest_type) -> list:
     """Gets all the guests of type provided that have checked in then,
     reformats and returns their information into a list of sets.
@@ -63,6 +38,31 @@ def format_guest_info(response, guest_type) -> list:
         home_owners_info.append(home_owner)
 
     return home_owners_info
+
+
+def get_guests(api_key, site_id) -> json:
+    """Gets all guests that have checked in on the current day."""
+    print("Retrieving visitor list")
+
+    today = datetime.today()
+    today_unix = round(time.mktime(datetime.combine(today, datetime.min.time()).timetuple()))
+    now_unix = round(time.mktime(datetime.now().timetuple()))
+
+    url = "https://api.verkada.com/guest/v1/visits"
+    headers = {
+        "accept": "application/json",
+        "x-api-key": api_key
+    }
+    params = {
+        "site_id": site_id,
+        "start_time": today_unix,
+        "end_time": now_unix,
+    }
+
+    request = check_for_server_error(lambda: requests.get(url=url, headers=headers, params=params))
+    guest_response = request.json()
+
+    return guest_response
 
 
 def get_latest_checkin(guests) -> dict:
