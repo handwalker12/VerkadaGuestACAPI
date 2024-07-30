@@ -1,46 +1,14 @@
 import json
 
 
-def name_splitter(full_name) -> dict:
-    """Will split up a users full name into the dedicated segments.
-    Honestly I shouldn't have to make this function but the API gods dictate it!
-    """
-    first_name = full_name.split()[0]
-    middle_name = ""
-    last_name = ""
-
+def add_user_to_created_users(u_id) -> None:
+    """Adds a new user id to the created_users.txt"""
     try:
-        last_name = full_name.split()[2]
-    except IndexError:
-        last_name = full_name.split()[1]
-    else:
-        middle_name = full_name.split()[1]
-        last_name = full_name.split()[2]
-
-    names = {
-        "first_name": first_name,
-        "middle_name": middle_name,
-        "last_name": last_name
-    }
-
-    return names
-
-
-def payload_creator(info, input_address='') -> dict:
-    """Creates the payload for the update users API call in AC"""
-    possible_keys = ["company_name", "department", "department_id", "email", "employee_type", "external_id",
-                     "first_name", "last_name", "middle_name", "phone"]
-    keys = []
-    for key in info:
-        if key in possible_keys:
-            keys.append(key)
-
-    payload = {key: value for key, value in info.items()}
-
-    if input_address:
-        payload['department'] = input_address
-
-    return payload
+        with open("created_users.txt", "x+") as f:
+            f.write(f"{u_id}\n")
+    except FileExistsError:
+        with open("created_users.txt", "r+") as f:
+            f.write(f"{u_id}\n")
 
 
 def check_address(visit_info) -> str:
@@ -92,11 +60,43 @@ def check_user_previously_created(u_id) -> bool:
             return False
 
 
-def add_user_to_created_users(u_id) -> None:
-    """Adds a new user id to the created_users.txt"""
+def name_splitter(full_name) -> dict:
+    """Will split up a users full name into the dedicated segments.
+    Honestly I shouldn't have to make this function but the API gods dictate it!
+    """
+    first_name = full_name.split()[0]
+    middle_name = ""
+    last_name = ""
+
     try:
-        with open("created_users.txt", "x+") as f:
-            f.write(f"{u_id}\n")
-    except FileExistsError:
-        with open("created_users.txt", "r+") as f:
-            f.write(f"{u_id}\n")
+        last_name = full_name.split()[2]
+    except IndexError:
+        last_name = full_name.split()[1]
+    else:
+        middle_name = full_name.split()[1]
+        last_name = full_name.split()[2]
+
+    names = {
+        "first_name": first_name,
+        "middle_name": middle_name,
+        "last_name": last_name
+    }
+
+    return names
+
+
+def payload_creator(info, input_address='') -> dict:
+    """Creates the payload for the update users API call in AC"""
+    possible_keys = ["company_name", "department", "department_id", "email", "employee_type", "external_id",
+                     "first_name", "last_name", "middle_name", "phone"]
+    keys = []
+    for key in info:
+        if key in possible_keys:
+            keys.append(key)
+
+    payload = {key: value for key, value in info.items()}
+
+    if input_address:
+        payload['department'] = input_address
+
+    return payload
