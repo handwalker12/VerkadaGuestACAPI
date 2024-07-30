@@ -2,10 +2,11 @@ import requests
 from datetime import datetime
 import time
 from checks import name_splitter, check_address, check_for_server_error
+import json
 
 
-# Gets all guests that have checked in on the current day
-def get_guests(api_key, site_id) -> list:
+def get_guests(api_key, site_id) -> json:
+    """Gets all guests that have checked in on the current day."""
     print("Retrieving visitor list")
 
     today = datetime.today()
@@ -29,9 +30,10 @@ def get_guests(api_key, site_id) -> list:
     return guest_response
 
 
-# Gets all the guests of type provided that have checked in then,
-# reformats and returns their information into a list of sets
 def format_guest_info(response, guest_type) -> list:
+    """Gets all the guests of type provided that have checked in then,
+    reformats and returns their information into a list of sets.
+    """
     print(f"Getting {guest_type}'s")
     guests = response['visits']
     home_owners_visit = [home_owner for home_owner in guests if home_owner['visit_type'] == guest_type]
@@ -63,9 +65,10 @@ def format_guest_info(response, guest_type) -> list:
     return home_owners_info
 
 
-# Gets the latest check-in of guests that match the type provided at start
-# This most likely won't be needed but here just in case
 def get_latest_checkin(guests) -> dict:
+    """Gets the latest check-in of guests that match the type provided at start.
+    This most likely won't be needed but here just in case.
+    """
     latest_time = 0
     latest_guest = {}
 

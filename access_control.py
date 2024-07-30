@@ -1,9 +1,10 @@
 import requests
 from checks import name_splitter, payload_creator, check_for_server_error, check_user_created
+import json
 
 
-# Gets all access control users
 def get_access_users(api_key) -> list:
+    """Gets all access control users."""
     url = "https://api.verkada.com/access/v1/access_users"
     headers = {
         "accept": "application/json",
@@ -15,8 +16,8 @@ def get_access_users(api_key) -> list:
     return response.json()['access_members']
 
 
-# Creates a new user using the user dict provided
-def create_new_user(api_key, new_user) -> dict:
+def create_new_user(api_key, new_user) -> json:
+    """Creates a new user using the user dict provided."""
     print("Creating new user")
     url = "https://api.verkada.com/core/v1/user"
     headers = {
@@ -38,9 +39,10 @@ def create_new_user(api_key, new_user) -> dict:
     return response.json()
 
 
-# Given a user_id and any additional params available in the body params of the Update User API call, will update
-# the users information: https://apidocs.verkada.com/reference/putuserviewv1
 def update_users_information(api_key, user_id, input_address) -> None:
+    """Given a user_id and any additional params available in the body params of the Update User API call, will update
+    the users information: https://apidocs.verkada.com/reference/putuserviewv1
+    """
     url = "https://api.verkada.com/core/v1/user"
 
     params = {'user_id': user_id}
@@ -59,8 +61,8 @@ def update_users_information(api_key, user_id, input_address) -> None:
     print(f"Server Response: {response.json()}")
 
 
-# Gets all the information from an existing user
-def get_all_user_info(api_key, user_id) -> dict:
+def get_all_user_info(api_key, user_id) -> json:
+    """Gets all the information from an existing user."""
     url = "https://api.verkada.com/core/v1/user"
 
     params = {'user_id': user_id}
@@ -75,9 +77,10 @@ def get_all_user_info(api_key, user_id) -> dict:
     return response.json()
 
 
-# Will check if the user already exists and creates them if not
-# using the provided new user information and list of existing ac users
 def create_user_if_not_exists(api_key, new_user) -> dict:
+    """Will check if the user already exists and creates them if not
+    using the provided new user information and list of existing ac users.
+    """
     user_list = get_access_users(api_key)
     for user in user_list:
         user_names = name_splitter(user['full_name'])
@@ -110,8 +113,10 @@ def create_user_if_not_exists(api_key, new_user) -> dict:
     return new_user
 
 
-# Given a list of new users to create, will run create_user_if_not_exists() for each and return the list of new users
 def get_created_ac_users(api_key, new_users) -> list:
+    """Given a list of new users to create, will run create_user_if_not_exists()
+     for each and return the list of new users.
+     """
     list_of_new_users = []
 
     for user in new_users:
@@ -123,6 +128,7 @@ def get_created_ac_users(api_key, new_users) -> list:
 
 
 def send_pass_app_invite(api_key, user_id) -> None:
+    """Sends the Pass App invite to the given user_id."""
     print("Sending Pass App Invite")
     url = "https://api.verkada.com/access/v1/access_users/user/pass/invite"
 
@@ -136,8 +142,8 @@ def send_pass_app_invite(api_key, user_id) -> None:
     check_for_server_error(lambda: requests.post(url=url, headers=headers, params=params))
 
 
-# Gets all ac groups
-def get_groups(api_key) -> dict:
+def get_groups(api_key) -> json:
+    """Gets all AC groups."""
     url = "https://api.verkada.com/access/v1/access_groups"
 
     headers = {
@@ -150,8 +156,8 @@ def get_groups(api_key) -> dict:
     return response.json()
 
 
-# Creates a new ac group with the provided name
-def create_group(api_key, group_name) -> dict:
+def create_group(api_key, group_name) -> json:
+    """Creates a new ac group with the provided name."""
     print("Creating new group")
     url = "https://api.verkada.com/access/v1/access_groups/group"
 
@@ -168,8 +174,8 @@ def create_group(api_key, group_name) -> dict:
     return response.json()
 
 
-# Checks if the ac group exists and will create it if not using hte prov
 def create_group_if_not_exists(api_key, new_group_name) -> str:
+    """Checks if the ac group exists and will create it if not using the provided group name."""
     group_list = get_groups(api_key)
 
     for group in group_list['access_groups']:
@@ -182,8 +188,8 @@ def create_group_if_not_exists(api_key, new_group_name) -> str:
     return response['group_id']
 
 
-# Adds user to group by given id's
-def add_user_to_group(api_key, user_id, group_id) -> dict:
+def add_user_to_group(api_key, user_id, group_id) -> json:
+    """Adds user to group by given id's"""
     print("Attempting to add user to group")
     url = "https://api.verkada.com/access/v1/access_groups/group/user"
 
@@ -202,8 +208,10 @@ def add_user_to_group(api_key, user_id, group_id) -> dict:
     return response.json()
 
 
-# Given a list of ac users, will run create_group_if_not_exists() and then add that user to the newly created group
 def create_groups_add_users(api_key, ac_user_list, existing_ac_group_id) -> None:
+    """Given a list of ac users, will run create_group_if_not_exists()
+    and then add that user to the newly created group
+    """
     for ac_user in ac_user_list:
         group_id = create_group_if_not_exists(api_key, ac_user['address'])
         user_add_to_group_response = add_user_to_group(api_key, ac_user['user_id'], group_id)
