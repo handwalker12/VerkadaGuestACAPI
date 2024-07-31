@@ -11,7 +11,10 @@ def format_guest_info(response, guest_type) -> list:
     print(f"Getting {guest_type}'s")
     guests = response["visits"]
     home_owners_visit = [
-        home_owner for home_owner in guests if home_owner["visit_type"] == guest_type
+        home_owner
+        for home_owner in guests
+        if home_owner["visit_type"] is guest_type
+        and home_owner["approval_status"] == "APPROVED"
     ]
     home_owners_info = []
     for visit in home_owners_visit:
