@@ -9,10 +9,12 @@ This will automate processes where users are required to fill out information on
 Please follow these setup instructions to get this script working:
 
 1. Set the environment variables to the appropriate values listed below:
-    - `VERKADA_API_KEY`: Give this read/write permissions from your Command organization and save it somewhere.
-    - `GUEST_SITE_ID`: This is the site ID for the guest site users will be signing into from the iPad.
-    - `GUEST_TYPE`: This is the guest type that you have created within guest which will require an open-ended response question to be created for the user to input their address.
-    - `AC_GROUP_ID`: This is the group_id for the group that you created in access control users and groups which will be tied to an access level to automatically grant users access to doors you have set.
+| Key              | Description                                                                                                                                                                     |
+|------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `VERKADA_API_KEY` | **Purpose:** API key with read/write permissions.<br>**Note:** Assign this from your Command organization and store it securely.                                                  |
+| `GUEST_SITE_ID`   | **Purpose:** Site ID for the guest site.<br>**Note:** This is used for guest users signing in from the iPad.                                                                      |
+| `GUEST_TYPE`      | **Purpose:** Guest type configuration.<br>**Note:** Requires an open-ended response question for users to input their address.                                                     |
+| `AC_GROUP_ID`     | **Purpose:** Access control group ID.<br>**Note:** Tied to an access level that grants users automatic access to specific doors.                                                     |
 2. Do a test run on this script with a user who has signed into the iPad to verify that all relevant information has been generated.
 
 ## FAQ
