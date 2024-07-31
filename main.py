@@ -3,17 +3,16 @@ import sys
 from guest import get_guests, format_guest_info
 from access_control import get_created_ac_users, create_groups_add_users
 
-if __name__ == '__main__':
-
+if __name__ == "__main__":
     # All three of these variables will need to be changed depending on your setup
     # This will match the name of the guest type that you are looking for in Command
-    GUEST_TYPE = os.environ['GUEST_TYPE']
+    GUEST_TYPE = os.environ["GUEST_TYPE"]
     # This is the site-id for the guest site the guests will be checking into
-    GUEST_SITE_ID = os.environ['GUEST_SITE_ID']
+    GUEST_SITE_ID = os.environ["GUEST_SITE_ID"]
     # Your API key will need to be made as an environment variable
-    API_KEY = os.environ['VERKADA_API_KEY']
+    API_KEY = os.environ["VERKADA_API_KEY"]
     # The name of the group made in AC that will have the access level tied to it
-    AC_GROUP_ID = os.environ['AC_GROUP_ID']
+    AC_GROUP_ID = os.environ["AC_GROUP_ID"]
 
     # Gets full list of guests and sorts for guests of particular type
     guest_list = get_guests(API_KEY, GUEST_SITE_ID)

@@ -16,11 +16,11 @@ def check_address(visit_info) -> str:
     Probably don't need this but just keeping in case.
     """
     try:
-        address = visit_info['open_ended_responses'][0]['response']
+        address = visit_info["open_ended_responses"][0]["response"]
     except IndexError:
         address = ""
     else:
-        address = visit_info['open_ended_responses'][0]['response']
+        address = visit_info["open_ended_responses"][0]["response"]
 
     return address
 
@@ -34,8 +34,13 @@ def check_for_server_error(request) -> json:
         print(response)
         response = request()
 
-    if int(str(response.status_code)[0]) == 4 and int(str(response.status_code)[2]) != 0:
-        raise Exception(f"{response}\nStopping, please verify your environment variables!")
+    if (
+        int(str(response.status_code)[0]) == 4
+        and int(str(response.status_code)[2]) != 0
+    ):
+        raise Exception(
+            f"{response}\nStopping, please verify your environment variables!"
+        )
 
     return response
 
@@ -45,7 +50,7 @@ def check_user_previously_created(u_id) -> bool:
     try:
         with open("created_users.txt", "x+") as f:
             for line in f:
-                if line.strip('\n') == u_id:
+                if line.strip("\n") == u_id:
                     print("User previously created")
                     return True
 
@@ -53,7 +58,7 @@ def check_user_previously_created(u_id) -> bool:
     except FileExistsError:
         with open("created_users.txt", "r+") as f:
             for line in f:
-                if line.strip('\n') == u_id:
+                if line.strip("\n") == u_id:
                     print("User previously created")
                     return True
 
@@ -79,16 +84,26 @@ def name_splitter(full_name) -> dict:
     names = {
         "first_name": first_name,
         "middle_name": middle_name,
-        "last_name": last_name
+        "last_name": last_name,
     }
 
     return names
 
 
-def payload_creator(info, input_address='') -> dict:
+def payload_creator(info, input_address="") -> dict:
     """Creates the payload for the update users API call in AC"""
-    possible_keys = ["company_name", "department", "department_id", "email", "employee_type", "external_id",
-                     "first_name", "last_name", "middle_name", "phone"]
+    possible_keys = [
+        "company_name",
+        "department",
+        "department_id",
+        "email",
+        "employee_type",
+        "external_id",
+        "first_name",
+        "last_name",
+        "middle_name",
+        "phone",
+    ]
     keys = []
     for key in info:
         if key in possible_keys:
@@ -97,6 +112,6 @@ def payload_creator(info, input_address='') -> dict:
     payload = {key: value for key, value in info.items()}
 
     if input_address:
-        payload['department'] = input_address
+        payload["department"] = input_address
 
     return payload
