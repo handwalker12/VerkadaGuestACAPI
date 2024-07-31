@@ -2,7 +2,6 @@ import requests
 from datetime import datetime
 import time
 from checks import name_splitter, check_address, check_for_server_error
-import json
 
 
 def format_guest_info(response, guest_type) -> list:
@@ -42,7 +41,7 @@ def format_guest_info(response, guest_type) -> list:
     return home_owners_info
 
 
-def get_guests(api_key, site_id) -> json:
+def get_guests(api_key, site_id) -> dict:
     """Gets all guests that have checked in on the current day."""
     print("Retrieving visitor list")
 

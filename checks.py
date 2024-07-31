@@ -1,6 +1,3 @@
-import json
-
-
 def add_user_to_created_users(u_id) -> None:
     """Adds a new user id to the created_users.txt"""
     try:
@@ -25,7 +22,7 @@ def check_address(visit_info) -> str:
     return address
 
 
-def check_for_server_error(request) -> json:
+def check_for_server_error(request) -> dict:
     """Function used to run requests and retry in the event there is a server error or a rate limit.
     Will also terminate the program in the event there is an error thrown due to improper setup.
     """

@@ -6,10 +6,9 @@ from checks import (
     check_user_previously_created,
     add_user_to_created_users,
 )
-import json
 
 
-def add_user_to_group(api_key, user_id, group_id) -> json:
+def add_user_to_group(api_key, user_id, group_id) -> dict:
     """Adds user to group by given id's"""
     print("Attempting to add user to group")
     url = "https://api.verkada.com/access/v1/access_groups/group/user"
@@ -31,7 +30,7 @@ def add_user_to_group(api_key, user_id, group_id) -> json:
     return response.json()
 
 
-def create_group(api_key, group_name) -> json:
+def create_group(api_key, group_name) -> dict:
     """Creates a new ac group with the provided name."""
     print("Creating new group")
     url = "https://api.verkada.com/access/v1/access_groups/group"
@@ -81,7 +80,7 @@ def create_group_if_not_exists(api_key, new_group_name) -> str:
     return response["group_id"]
 
 
-def create_new_user(api_key, new_user) -> json:
+def create_new_user(api_key, new_user) -> dict:
     """Creates a new user using the user dict provided."""
     print("Creating new user")
     url = "https://api.verkada.com/core/v1/user"
@@ -168,7 +167,7 @@ def get_access_users(api_key) -> list:
     return response.json()["access_members"]
 
 
-def get_all_user_info(api_key, user_id) -> json:
+def get_all_user_info(api_key, user_id) -> dict:
     """Gets all the information from an existing user."""
     url = "https://api.verkada.com/core/v1/user"
 
@@ -196,7 +195,7 @@ def get_created_ac_users(api_key, new_users) -> list:
     return list_of_new_users
 
 
-def get_groups(api_key) -> json:
+def get_groups(api_key) -> dict:
     """Gets all AC groups."""
     url = "https://api.verkada.com/access/v1/access_groups"
 
