@@ -9,12 +9,14 @@ This will automate processes where users are required to fill out information on
 Please follow these setup instructions to get this script working:
 
 1. Set the environment variables to the appropriate values listed below:
+
 | Key              | Description                                                                                                                                                                     |
 |------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `VERKADA_API_KEY` | **Purpose:** API key with read/write permissions.<br>**Note:** Assign this from your Command organization and store it securely.                                                  |
 | `GUEST_SITE_ID`   | **Purpose:** Site ID for the guest site.<br>**Note:** This is used for guest users signing in from the iPad.                                                                      |
 | `GUEST_TYPE`      | **Purpose:** Guest type configuration.<br>**Note:** Requires an open-ended response question for users to input their address.                                                     |
 | `AC_GROUP_ID`     | **Purpose:** Access control group ID.<br>**Note:** Tied to an access level that grants users automatic access to specific doors.                                                     |
+
 2. Do a test run on this script with a user who has signed into the iPad to verify that all relevant information has been generated.
 
 ## FAQ
