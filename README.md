@@ -8,16 +8,28 @@ This will automate processes where users are required to fill out information on
 
 Please follow these setup instructions to get this script working:
 
-1. Set the environment variables to the appropriate values listed below:
+1. Create a guest type in Verkada Guest that you would like to automatically create an associated user and group for their address in Access Control upon a successful sign-in.
+
+2. Make sure that this guest type has the require email and phone number for sign in option selected.
+
+3. (Optional) You can have the require host approval for check-in option selected. However, this guest will not have their user account and group created until they are listed as an APPROVED status.
+
+4. Create an open ended question for this guest type asking for them to input their address.
+
+5. In Access Control, make an access group that you will use to allow these users access to particular doors. Also save this groups ID for use in the scripts environment variables.
+
+6. Created an associated access level for this group which will allow users access to certain doors.
+
+7. Set the environment variables to the appropriate values listed below:
 
 | Key              | Description                                                                                                                                                                     |
 |------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `VERKADA_API_KEY` | **Purpose:** API key with read/write permissions.<br>**Note:** Assign this from your Command organization and store it securely.                                                  |
-| `GUEST_SITE_ID`   | **Purpose:** Site ID for the guest site.<br>**Note:** This is used for guest users signing in from the iPad.                                                                      |
-| `GUEST_TYPE`      | **Purpose:** Guest type configuration.<br>**Note:** Requires an open-ended response question for users to input their address.                                                     |
-| `AC_GROUP_ID`     | **Purpose:** Access control group ID.<br>**Note:** Tied to an access level that grants users automatic access to specific doors.                                                     |
+| `GUEST_SITE_ID`   | **Purpose:** Site ID for the guest site.<br>**Note:** Can be retrieved from the URL in command when looking at the site check-ins from the main guest page, in XX-XX-XX-XX-XX format. This is used for guest users signing in from the iPad.                                                                      |
+| `GUEST_TYPE`      | **Purpose:** Guest type configuration.<br>**Note:** This will be the name of the guest type that you have created for the above guest site.                                                     |
+| `AC_GROUP_ID`     | **Purpose:** Access control group ID.<br>**Note:** Can be retrieved from the URL in command when looking at the group information, in XX-XX-XX-XX-XX format. Tied to an access level that grants users automatic access to specific doors.                                                     |
 
-2. Do a test run on this script with a user who has signed into the iPad to verify that all relevant information has been generated.
+8. Do a test run on this script with a user who has signed into the iPad to verify that all relevant information has been generated.
 
 ## FAQ
 

@@ -16,6 +16,11 @@ if __name__ == "__main__":
 
     # Gets full list of guests and sorts for guests of particular type
     guest_list = get_guests(API_KEY, GUEST_SITE_ID)
+
+    if guest_list["visits"] == []:
+        print("No new guests")
+        sys.exit()
+
     guests_of_given_type = format_guest_info(guest_list, GUEST_TYPE)
 
     # Will end program if no guests of particular type are found
