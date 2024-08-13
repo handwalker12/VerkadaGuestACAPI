@@ -1,6 +1,6 @@
 import requests
 from checks import (
-    name_splitter,
+    # name_splitter,
     payload_creator,
     check_for_server_error,
     check_user_previously_created,
@@ -111,7 +111,7 @@ def create_user_if_not_exists(api_key, new_user) -> dict:
     """
     user_list = get_access_users(api_key)
     for user in user_list:
-        user_names = name_splitter(user["full_name"])
+        # user_names = name_splitter(user["full_name"]) Removing for now
 
         # Checks if the user has been previously created by this script
         if check_user_previously_created(user["user_id"]):
@@ -130,21 +130,22 @@ def create_user_if_not_exists(api_key, new_user) -> dict:
 
             return new_user
 
-        # Checks if the full name is the same
-        elif (
-            new_user["first_name"] == user_names["first_name"]
-            and new_user["middle_name"] == user_names["middle_name"]
-            and new_user["last_name"] == user_names["last_name"]
-        ):
-            print(
-                f"{new_user['first_name']} {new_user['last_name']} already exists, updating information"
-            )
-            new_user["ac_exists"] = True
-            new_user["user_id"] = user["user_id"]
-            update_users_information(api_key, new_user["user_id"], new_user["address"])
-            add_user_to_created_users(new_user["user_id"])
+        # Removing this code block for now as it causes issues in the event there are users with duplicate names and no emails added
+        # # Checks if the full name is the same
+        # elif (
+        #     new_user["first_name"] == user_names["first_name"]
+        #     and new_user["middle_name"] == user_names["middle_name"]
+        #     and new_user["last_name"] == user_names["last_name"]
+        # ):
+        #     print(
+        #         f"{new_user['first_name']} {new_user['last_name']} already exists, updating information"
+        #     )
+        #     new_user["ac_exists"] = True
+        #     new_user["user_id"] = user["user_id"]
+        #     update_users_information(api_key, new_user["user_id"], new_user["address"])
+        #     add_user_to_created_users(new_user["user_id"])
 
-            return new_user
+        #     return new_user
 
     # Creates the new user, sends pass app invite, updates created_users.txt
     create_user_response = create_new_user(api_key, new_user)

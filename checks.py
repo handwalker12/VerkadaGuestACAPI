@@ -27,9 +27,16 @@ def check_for_server_error(request) -> dict:
     Will also terminate the program in the event there is an error thrown due to improper setup.
     """
     response = request()
-    while int(str(response.status_code)[0]) == 5 or response.status_code == 429:
+    count = 0
+    while (
+        int(str(response.status_code)[0]) == 5 or response.status_code == 429
+    ) and count < 5:
         print(response)
         response = request()
+        count += 1
+
+    if count == 5:
+        raise Exception(f"{response}\nStopping, too many server errors")
 
     if (
         int(str(response.status_code)[0]) == 4
